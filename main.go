@@ -31,7 +31,7 @@ type ShellCmd struct {
 
 const APIVERSION = "1.25"
 const DEBUG = true
-const DOKKU_APP_LABEL = "com.dokku.app-name"
+const DOKKU_APP_LABEL = "dds.workspace.app-name"
 
 var cm containerMap
 var dockerClient *client.Client
@@ -161,7 +161,7 @@ func handleEvent(ctx context.Context, event events.Message) (error) {
 				Int("restart_count", container.RestartCount).
 				Int("max_restart_count", container.HostConfig.RestartPolicy.MaximumRetryCount).
 				Msg("rebuilding_app")
-			if err := runCommand("dokku", "--quiet", "ps:rebuild", appName); err != nil {
+			if err := runCommand("/var/www/manager/manage.py", "update_nginx", appName); err != nil {
 				log.Warn().
 					Str("container_id", containerShortId).
 					Str("app", appName).
